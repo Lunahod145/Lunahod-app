@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "lunohod-app"
+version = "0.1.0"
+description = ""
+authors = ["LEv145"]
+packages = [{include = "lunohod_app", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+pyside6 = "^6.4.1"
+inputs = "^0.5"
+
+[tool.poetry.scripts]
+lunohod_app = "lunohod_app.__main__:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
