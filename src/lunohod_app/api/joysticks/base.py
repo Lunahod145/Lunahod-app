@@ -9,12 +9,12 @@ from inputs import GamePad, InputEvent
 class Joystick(abc.ABC):
     def __init__(self, joystick: GamePad) -> None:
         self._joystick = joystick
-        self._events: dict[str, "JoystickEvent"] = {}
+        self._events: list["ABCJoystickEvent"] = []
 
         self._start_threads()
 
-    def set_event(self, code: str, event: "JoystickEvent"):
-        self._events[code] = event
+    def set_event(self, event: "ABCJoystickEvent"):
+        self._events.append(event)
 
     def _start_threads(self) -> None:
         self._monitor_thread = Thread(target=self._controller_thread, daemon=True)
@@ -22,26 +22,29 @@ class Joystick(abc.ABC):
 
     def _controller_thread(self):
         while True:
-            joystick_events = self._joystick.read()
-            for joystick_event in joystick_events:
-                if not(joystick_event.ev_type in ("Absolute", "Key")):
-                    continue
-                try:
-                    event = self._events[joystick_event.code]
-                except KeyError:
-                    continue
-
-                joystick_event = self._prepare_joystick_event(joystick_event)
-                event.do(joystick_event)
+            self._read_joystick_events(self._joystick.read())
 
     @abc.abstractmethod
     def _prepare_joystick_event(self, joystick_event: InputEvent) -> "JoystickInput":
-        pass
+        return JoystickInput(
+            device=joystick_event.device,
+            timestamp=datetime.fromtimestamp(joystick_event.timestamp),
+            code=joystick_event.code,
+            state=joystick_event.state,
+        )
 
 
-class JoystickEvent(abc.ABC):
-    @abc.abstractmethod
-    def do(self, event: "JoystickInput") -> None:
+    def _read_joystick_events(self, joystick_events: list[InputEvent]) -> None:
+        for joystick_event in joystick_events:
+            if not(joystick_event.ev_type in ("Absolute", "Key")):
+                continue
+
+            for event in self._events:
+                event.on_event(self._prepare_joystick_event(joystick_event))
+
+
+class ABCJoystickEvent(abc.ABC):
+    def on_event(self, event: "JoystickInput") -> None:
         pass
 
 
@@ -50,4 +53,4 @@ class JoystickInput():
     device: GamePad
     timestamp: datetime
     code: str
-    state: float
+    state: int
