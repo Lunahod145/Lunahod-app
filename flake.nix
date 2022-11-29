@@ -1,6 +1,8 @@
+
 {
 description = "Lunohod";
 inputs = {
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 };
 
@@ -12,8 +14,9 @@ outputs = {self, nixpkgs, flake-utils}:
             devShells.default = pkgs.mkShell rec {
                 buildInputs = with pkgs; [
                     qt6.full
-                    stdenv.cc.cc.lib
                     qt6.qtmultimedia
+                    stdenv.cc.cc.lib
+
                     glibc
                 ];
 
@@ -22,11 +25,10 @@ outputs = {self, nixpkgs, flake-utils}:
                 QT_PLUGIN_PATH = "${pkgs.qt6.full}/lib/qt-6/plugins";
 
                 shellHook = ''
-                    echo ${pkgs.qt6.qtmultimedia}
-                    function patch_(){
+                    function p(){
                         patchelf --set-interpreter ${pkgs.glibc}/lib/ld-linux-x86-64.so.2 $1
                     }
-                    export -f patch_
+                    export -f p
                 '';
             };
         }

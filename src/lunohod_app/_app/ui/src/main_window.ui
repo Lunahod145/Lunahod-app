@@ -44,7 +44,7 @@
   <customwidget>
    <class>QVideoWidget</class>
    <extends>QWidget</extends>
-   <header>PySide6.QtMultimediaWidgets</header>
+   <header>PySide2.QtMultimediaWidgets</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

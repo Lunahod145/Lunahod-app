@@ -3,8 +3,8 @@ import threading
 
 from lunohod_app._app.ui import Ui_MainWindow
 
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtMultimedia import QMediaPlayer
+from PySide2.QtWidgets import QApplication, QMainWindow
+from PySide2.QtMultimedia import QMediaPlayer
 
 
 class MainWindow(QMainWindow):

@@ -44,6 +44,7 @@ class XBox360Joystick(ABCJoystickEvent, XBox360JoystickEventsMixin):
         methods: "XBox360JoystickCodeMethods",
         event: JoystickInput,
     ) -> None:
+
         state = self._normalize_state(event=event)
 
         if state == 0:

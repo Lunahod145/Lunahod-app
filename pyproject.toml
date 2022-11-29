@@ -7,15 +7,12 @@ packages = [{include = "lunohod_app", from = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.11"
-pyside6 = "^6.4.1"
 inputs = "^0.5"
+pyside6 = "^6.4.1"
 
 [tool.poetry.scripts]
 lunohod_app = "lunohod_app.__main__:main"
 
-
-[tool.poetry.group.dev.dependencies]
-ipython = "^8.6.0"
 
 [build-system]
 requires = ["poetry-core"]
