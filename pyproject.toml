@@ -6,13 +6,16 @@ authors = ["LEv145"]
 packages = [{include = "lunohod_app", from = "src"}]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
+python = "^3.10"
 inputs = "^0.5"
 pyside6 = "^6.4.1"
 
 [tool.poetry.scripts]
 lunohod_app = "lunohod_app.__main__:main"
 
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.7.0"
 
 [build-system]
 requires = ["poetry-core"]

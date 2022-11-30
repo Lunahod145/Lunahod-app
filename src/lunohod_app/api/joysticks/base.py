@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import abc
 from threading import Thread
 from dataclasses import dataclass
@@ -5,18 +7,6 @@ from datetime import datetime
 
 from inputs import GamePad, InputEvent
 
-
-class ABCJoystickEvent(abc.ABC):
-    def on_event(self, event: "JoystickInput") -> None:
-        pass
-
-
-@dataclass
-class JoystickInput():
-    device: GamePad
-    timestamp: datetime
-    code: str
-    state: int
 
 
 class Joystick(Thread):
@@ -45,3 +35,16 @@ class Joystick(Thread):
 
             for event in self._events:
                 event.on_event(self._prepare_joystick_event(joystick_event))
+
+
+class ABCJoystickEvent(abc.ABC):
+    def on_event(self, event: JoystickInput) -> None:
+        pass
+
+
+@dataclass
+class JoystickInput():
+    device: GamePad
+    timestamp: datetime
+    code: str
+    state: int
