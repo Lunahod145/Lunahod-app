@@ -5,8 +5,7 @@ from threading import Thread
 from dataclasses import dataclass
 from datetime import datetime
 
-from inputs import GamePad, InputEvent
-
+from inputs import GamePad, InputEvent  # FIXME: t.TYPE_CHECKING
 
 
 class Joystick(Thread):
