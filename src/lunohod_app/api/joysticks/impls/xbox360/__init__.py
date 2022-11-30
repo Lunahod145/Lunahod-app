@@ -49,6 +49,7 @@ class XBox360Joystick(ABCJoystickEvent, XBox360JoystickEventsMixin):
         methods: XBox360JoystickCodeMethods,
         event: JoystickInput,
     ) -> None:
+        # TODO: _process_* -> objects (Factory Patten)
         if event.code in ("ABS_Y", "ABS_X", "ABS_RY", "ABS_RX"):
             self._process_stick(methods=methods, event=event)
         elif event.code in ("ABS_Z", "ABS_RZ"):
@@ -57,9 +58,8 @@ class XBox360Joystick(ABCJoystickEvent, XBox360JoystickEventsMixin):
             self._process_device(methods=methods, event=event)
 
     def _process_device(self, event: JoystickInput, methods: XBox360JoystickCodeMethods) -> None:
-        state = event.state
         new_event = XBox360JoystickInput(
-            state=state,
+            state=event.state,
             device=event.device,
             code=event.code,
             timestamp=event.timestamp,
@@ -71,9 +71,8 @@ class XBox360Joystick(ABCJoystickEvent, XBox360JoystickEventsMixin):
             self._realize(event=new_event, methods=methods)
 
     def _process_trigger(self, event: JoystickInput, methods: XBox360JoystickCodeMethods) -> None:
-        state = self._normalize_trigger_value(event.state)
         new_event = XBox360JoystickInput(
-            state=state,
+            state=self._normalize_trigger_value(event.state),
             device=event.device,
             code=event.code,
             timestamp=event.timestamp,
@@ -85,10 +84,8 @@ class XBox360Joystick(ABCJoystickEvent, XBox360JoystickEventsMixin):
             self._realize(event=new_event, methods=methods)
 
     def _process_stick(self, event: JoystickInput, methods: XBox360JoystickCodeMethods) -> None:
-        state = self._normalize_stick_value(event.state)
-
         new_event = XBox360JoystickInput(
-            state=state,
+            state=self._normalize_stick_value(event.state),
             device=event.device,
             code=event.code,
             timestamp=event.timestamp,
@@ -98,6 +95,7 @@ class XBox360Joystick(ABCJoystickEvent, XBox360JoystickEventsMixin):
             self._get_stick_coordinate(event.code) == StickCoordinate.Y
             and event.state == -1
         ):
+            new_event.state = 0
             self._realize(event=new_event, methods=methods)
         elif event.state == 0:
             self._realize(event=new_event, methods=methods)
@@ -136,4 +134,4 @@ class XBox360JoystickCodeMethods():
 
 class StickCoordinate(enum.Enum):
     X = enum.auto()
-    Y = enum.auto
+    Y = enum.auto()
