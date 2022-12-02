@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
+import typing as t
 
-from ...base import GamePad
+if t.TYPE_CHECKING:
+    from .devices import XBox360JoystickInput
 
 
 class XBox360JoystickEventsMixin():
@@ -51,11 +51,3 @@ class XBox360JoystickEventsMixin():
     def on_dpad_y_absolute_realized(self, event: XBox360JoystickInput) -> None: pass
     def on_left_trigger_absolute_realized(self, event: XBox360JoystickInput) -> None: pass
     def on_right_trigger_absolute_realized(self, event: XBox360JoystickInput) -> None: pass
-
-
-@dataclass
-class XBox360JoystickInput():
-    device: GamePad
-    timestamp: datetime
-    code: str
-    state: float

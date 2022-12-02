@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import typing as t
 import abc
 from threading import Thread
 from dataclasses import dataclass
 from datetime import datetime
 
-from inputs import GamePad, InputEvent  # FIXME: t.TYPE_CHECKING
+if t.TYPE_CHECKING:
+    from inputs import GamePad, InputEvent
 
 
 class Joystick(Thread):
@@ -33,11 +35,11 @@ class Joystick(Thread):
                 continue
 
             for event in self._events:
-                event.on_event(self._prepare_joystick_event(joystick_event))
+                event.on_raw_event(self._prepare_joystick_event(joystick_event))
 
 
 class ABCJoystickEvent(abc.ABC):
-    def on_event(self, event: JoystickInput) -> None:
+    def on_raw_event(self, event: JoystickInput) -> None:
         pass
 
 

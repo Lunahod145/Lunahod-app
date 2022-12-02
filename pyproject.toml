@@ -6,7 +6,7 @@ authors = ["LEv145"]
 packages = [{include = "lunohod_app", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.12"
 inputs = "^0.5"
 pyside6 = "^6.4.1"
 
